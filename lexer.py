@@ -5,6 +5,8 @@ relational_ops_single = {"<":"LT", ">":"GT"}
 realtional_op_double = {"<=":"LE", ">=":"GE", "==":"EQ", "!=":"NE"}
 arithmetic_op = ["+", "-", "*", "/", "^"]
 whitespaces = {" ":"blank", "\n":"newline", "\t":"tab"}
+letters = "abcdefghijklmnopqrstuvwxyz"
+digits = "0123456789"
 
 class Lexer:
     def __init__(self, input) -> None:
@@ -26,14 +28,6 @@ class Lexer:
         if self.curPos + 1 >= len(self.input):
             return '\0'
         return self.input[self.curPos + 1]
-    
-    # Detect the whitespaces in our code
-    def detectWhitespace(self):
-        pass
-
-    # Detect the comments in our code
-    def detectComments(self):
-        pass
 
     # Return the next token
     def getToken(self):
@@ -51,6 +45,24 @@ class Lexer:
                     token.append("<comment not closed properly!>")
             elif self.curChar in arithmetic_op:
                 token.append("<" + self.curChar + ">")
+        elif self.curChar in letters:
+            save_string = ""
+            while self.curChar not in whitespaces.keys():
+                save_string += self.curChar
+                self.nextChar()
+            if save_string in keywords:
+                token.append("<" + save_string + ">")
+            else:
+                token.append("<id, " + save_string + ">")
+        elif self.curChar in digits:
+            save_string = ""
+            if self.peek() in letters:
+                print("<unsupported!>")
+            else:
+                while self.curChar in digits:
+                    save_string += self.curChar
+                    self.nextChar()
+                token.append("<num, " + save_string + ">")   
         elif self.curChar in arithmetic_op:
             token.append("<" + self.curChar + ">")
         elif self.curChar in relational_ops_single:

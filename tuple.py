@@ -1,7 +1,7 @@
 from lexer import *
 
 def main():
-    with open("custom_test.tpl") as custom_test:
+    with open("CS-421-Lexer-for-TUPLE\custom_test.tpl") as custom_test:
         lines = custom_test.readlines()
 
     for line in lines:
