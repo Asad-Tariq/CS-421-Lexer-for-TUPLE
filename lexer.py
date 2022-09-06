@@ -1,16 +1,9 @@
-keywords = ["and", "break", "continue", "else", "false", "for", "if", "mod", "not", "or", "then", "true", "void", "while"]
-datatypes = ["bool", "char", "int", "float"]
-punctuators = ["{", "}", "(", ")", ";", "[", "]", "\'", "\"", ",", "."]
-relational_ops_single = {"<":"LT", ">":"GT"}
-realtional_op_double = {"<=":"LE", ">=":"GE", "==":"EQ", "!=":"NE"}
-arithmetic_op = ["+", "-", "*", "/", "^"]
-whitespaces = {" ":"blank", "\n":"newline", "\t":"tab"}
-letters = "abcdefghijklmnopqrstuvwxyz"
-digits = "0123456789"
+from tuple_spec import *
+
 
 class Lexer:
-    def __init__(self, input) -> None:
-        self.input = input + '\n'
+    def __init__(self, input_stream) -> None:
+        self.input = input_stream + '\n'
         self.curChar = ''
         self.curPos = -1
         self.nextChar()
@@ -19,7 +12,7 @@ class Lexer:
     def nextChar(self):
         self.curPos += 1
         if self.curPos >= len(self.input):
-            self.curChar = '\0' # EOF char
+            self.curChar = '\0'  # EOF char
         else:
             self.curChar = self.input[self.curPos]
 
@@ -68,7 +61,7 @@ class Lexer:
         elif self.curChar in relational_ops_single:
             if self.peek() == "=":
                 key = self.curChar + "="
-                token.append("<rel_op, " + realtional_op_double[key] + ">")
+                token.append("<rel_op, " + relational_op_double[key] + ">")
                 self.nextChar()
             else:
                 key = self.curChar
@@ -80,7 +73,7 @@ class Lexer:
                 save_string += self.curChar
                 self.nextChar()
             token.append("<literal, " + save_string + ">")
-        elif self.curChar in punctuators:
+        elif self.curChar in punctuation:
             token.append("<punctuator, " + self.curChar + ">")    
         elif self.curChar in whitespaces.keys():
             token.append("<" + whitespaces[self.curChar] + ">")
