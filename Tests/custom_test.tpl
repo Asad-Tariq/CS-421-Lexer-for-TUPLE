@@ -1,1 +1,1 @@
-void noMath(int a,
+/$ This  is comment in Tuple with many $$$ characters. $/

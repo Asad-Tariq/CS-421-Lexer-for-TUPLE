@@ -1,6 +1,6 @@
 # the language specification for TUPLE
 
-keywords = ["and", "break", "continue", "else", "false", "for", "if", "mod", "not", "or", "then",
+keywords = ["and", "break", "continue", "else", "false", "for", "if", "mod", "not", "or", "return", "str", "then",
             "true", "void", "while"]
 data_types = ["bool", "char", "int", "float"]
 punctuation = ["{", "}", "(", ")", ";", "[", "]", "\'", "\"", ",", "."]
