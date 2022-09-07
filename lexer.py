@@ -37,7 +37,8 @@ class Lexer:
                     self.nextChar()
                 else:
                     token.append("<comment not closed properly!>")
-                    self.nextChar()
+                    while self.curChar != "\n":
+                        self.nextChar()
             elif self.curChar in arithmetic_op:
                 token.append("<" + self.curChar + ">")
                 self.nextChar()
