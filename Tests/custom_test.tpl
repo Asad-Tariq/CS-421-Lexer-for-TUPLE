@@ -1,1 +1,1 @@
-/$ This  is comment in Tuple with many $$$ characters. $/
+float a = 31.2

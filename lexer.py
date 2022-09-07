@@ -66,17 +66,37 @@ class Lexer:
 
         return tok
 
+    # Detect float numbers
+    def checkFloat(self):
+        save_string = ""
+        if self.peek() not in digits and self.peek() != "E":
+            return save_string, False
+        else:
+            save_string += self.curChar
+            self.nextChar()
+            while self.curChar in digits or self.curChar == "E":
+                save_string += self.curChar
+                self.nextChar()
+            return save_string, True
+
     # Detect digits
     def checkDigit(self):
         save_string = ""
         tok = ""
         if self.peek() in letters:
-            print("<unsupported!>")
+            print("<Unsupported!>")
         else:
             while self.curChar in digits:
                 save_string += self.curChar
                 self.nextChar()
-            tok = "<num, " + save_string + ">"
+            if self.curChar == ".":
+                floatString, isFloat = self.checkFloat()
+                if isFloat:
+                    tok = "<float, " + save_string + floatString + ">"
+                else:
+                    tok = "<Invalid Float!>"
+            else:
+                tok = "<num, " + save_string + ">"
 
         return tok
 
