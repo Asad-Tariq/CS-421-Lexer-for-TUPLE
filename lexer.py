@@ -25,6 +25,7 @@ class Lexer:
     # Return the next token
     def getToken(self):
         token = []
+        # print("Current char", self.curChar)
         if self.curChar == "/":
             if self.peek() == "$":
                 self.nextChar()
@@ -36,15 +37,19 @@ class Lexer:
                     self.nextChar()
                 else:
                     token.append("<comment not closed properly!>")
+                    self.nextChar()
             elif self.curChar in arithmetic_op:
                 token.append("<" + self.curChar + ">")
+                self.nextChar()
         elif self.curChar in letters:
             save_string = ""
-            while self.curChar not in whitespaces.keys():
+            while self.curChar in letters:
                 save_string += self.curChar
                 self.nextChar()
             if save_string in keywords:
                 token.append("<" + save_string + ">")
+            elif save_string in data_types:
+                token.append("<dt, " + save_string + ">")
             else:
                 token.append("<id, " + save_string + ">")
         elif self.curChar in digits:
@@ -58,6 +63,10 @@ class Lexer:
                 token.append("<num, " + save_string + ">")   
         elif self.curChar in arithmetic_op:
             token.append("<" + self.curChar + ">")
+            self.nextChar()
+        elif self.curChar in assignment:
+            token.append("<assign, " + self.curChar + ">")
+            self.nextChar()
         elif self.curChar in relational_ops_single:
             if self.peek() == "=":
                 key = self.curChar + "="
@@ -66,6 +75,7 @@ class Lexer:
             else:
                 key = self.curChar
                 token.append("<rel_op, " + relational_ops_single[key] + ">")
+                self.nextChar()
         elif self.curChar == "\"":
             save_string = ""
             self.nextChar()
@@ -73,12 +83,15 @@ class Lexer:
                 save_string += self.curChar
                 self.nextChar()
             token.append("<literal, " + save_string + ">")
+            self.nextChar()
         elif self.curChar in punctuation:
-            token.append("<punctuator, " + self.curChar + ">")    
+            token.append("<punctuator, " + self.curChar + ">")
+            self.nextChar()   
         elif self.curChar in whitespaces.keys():
             token.append("<" + whitespaces[self.curChar] + ">")
+            self.nextChar()
         else:
             pass
 
-        self.nextChar()
+        # self.nextChar()
         return token

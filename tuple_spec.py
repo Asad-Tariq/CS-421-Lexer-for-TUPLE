@@ -7,6 +7,7 @@ punctuation = ["{", "}", "(", ")", ";", "[", "]", "\'", "\"", ",", "."]
 relational_ops_single = {"<": "LT", ">": "GT"}
 relational_op_double = {"<=": "LE", ">=": "GE", "==": "EQ", "!=": "NE"}
 arithmetic_op = ["+", "-", "*", "/", "^"]
+assignment = "="
 whitespaces = {" ": "blank", "\n": "newline", "\t": "tab"}
-letters = "abcdefghijklmnopqrstuvwxyz"
+letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
 digits = "0123456789"

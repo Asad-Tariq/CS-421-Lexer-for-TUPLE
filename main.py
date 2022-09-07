@@ -3,7 +3,7 @@ from lexer import *
 
 def main():
     # open test file
-    with open("Tests\\custom_test.tpl") as custom_test:
+    with open("Tests\\test02.tpl") as custom_test:
         lines = custom_test.readlines()
 
     # pass the input stream line by line
