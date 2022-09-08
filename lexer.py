@@ -65,7 +65,6 @@ class Lexer:
             tok = "<dt, " + save_string + ">"
         else:
             tok = "<id, " + save_string + ">"
-
         return tok
 
     # Detect float numbers
