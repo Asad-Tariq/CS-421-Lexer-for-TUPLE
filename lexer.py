@@ -54,10 +54,12 @@ class Lexer:
     def checkKeyDtId(self):
         save_string = ""
         tok = ""
-        while self.curChar in letters:
+        while self.curChar in letters or self.curChar in digits or self.curChar in underscore:
             save_string += self.curChar
             self.nextChar()
-        if save_string in keywords:
+        if self.curChar not in whitespaces.keys() and self.curChar not in punctuation and self.curChar not in arithmetic_op:
+            tok = "<Invalid identifier!>"
+        elif save_string in keywords:
             tok = "<keyword, " + save_string + ">"
         elif save_string in data_types:
             tok = "<dt, " + save_string + ">"
@@ -70,6 +72,8 @@ class Lexer:
     def checkFloat(self):
         save_string = ""
         if self.peek() not in digits and self.peek() != "E":
+            while self.curChar != "\n":
+                self.nextChar()
             return save_string, False
         else:
             save_string += self.curChar
@@ -102,14 +106,29 @@ class Lexer:
 
     # Detect arithmetic operator
     def checkArithOp(self):
-        tok = "<" + self.curChar + ">"
-        self.nextChar()
+        save_string = ""
+        if self.curChar == "-" and self.peek() in digits:
+            save_string += self.curChar
+            self.nextChar()
+            while self.curChar in digits:
+                save_string += self.curChar
+                self.nextChar()
+            tok = "<num, " + save_string + ">" 
+        else:
+            tok = "<" + self.curChar + ">"
+            self.nextChar()
         return tok
 
     # Detect assignment operator
     def checkAssignOp(self):
-        tok = "<assign, " + self.curChar + ">"
-        self.nextChar()
+        if self.peek() != "=":
+            tok = "<assign, " + self.curChar + ">"
+            self.nextChar()
+            return tok
+        else:
+            tok = self.checkRelOp()
+            self.nextChar()
+
         return tok
 
     # Detect relational operator
@@ -117,6 +136,7 @@ class Lexer:
         if self.peek() == "=":
             key = self.curChar + "="
             tok = "<rel_op, " + relational_op_double[key] + ">"
+            self.nextChar()
             self.nextChar()
         else:
             key = self.curChar
@@ -134,6 +154,22 @@ class Lexer:
             self.nextChar()
         tok = "<literal, " + save_string + ">"
         self.nextChar()
+
+        return tok
+
+    # Detect character constant
+    def checkCharConstant(self):
+        save_string = ""
+        self.nextChar()
+        while self.curChar != "'" and self.curChar != "\n":
+            save_string += self.curChar
+            self.nextChar()
+        if len(save_string) == 1:
+            tok = "<char_constant, " + save_string + ">"
+        else:
+            tok = "<Invalid char constant!>"
+        if self.peek() != "\0":
+            self.nextChar()
 
         return tok
 
@@ -167,6 +203,8 @@ class Lexer:
             token.append(self.checkRelOp())
         elif self.curChar == "\"":
             token.append(self.checkStringLiteral())
+        elif self.curChar == "'":
+            token.append(self.checkCharConstant())
         elif self.curChar in punctuation:
             token.append(self.checkPunctuation())
         elif self.curChar in whitespaces.keys():

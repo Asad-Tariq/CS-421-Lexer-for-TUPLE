@@ -8,6 +8,7 @@ relational_ops_single = {"<": "LT", ">": "GT"}
 relational_op_double = {"<=": "LE", ">=": "GE", "==": "EQ", "!=": "NE"}
 arithmetic_op = ["+", "-", "*", "/", "^"]
 assignment = "="
+underscore = "_"
 whitespaces = {" ": "blank", "\n": "newline", "\t": "tab"}
 letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
 digits = "0123456789"
