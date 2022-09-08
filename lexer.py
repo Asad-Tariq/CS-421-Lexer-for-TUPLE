@@ -2,10 +2,12 @@ from tuple_spec import *
 
 
 class Lexer:
-    def __init__(self, input_stream) -> None:
+    def __init__(self, input_stream, symbol_table, symbol_count) -> None:
         self.input = input_stream + '\n'
         self.curChar = ''
         self.curPos = -1
+        self.symbol_table = symbol_table
+        self.symbol_count = symbol_count
         self.nextChar()
 
     # Process the next character
@@ -57,14 +59,19 @@ class Lexer:
         while self.curChar in letters or self.curChar in digits or self.curChar in underscore:
             save_string += self.curChar
             self.nextChar()
-        if self.curChar not in whitespaces.keys() and self.curChar not in punctuation and self.curChar not in arithmetic_op:
-            tok = "<Invalid identifier!>"
+        if self.curChar == ".":
+            tok = "<Invalid Identifier!>"
+        elif self.curChar not in whitespaces.keys() and self.curChar not in punctuation and self.curChar not in arithmetic_op:
+            tok = "<Invalid Identifier!>"
         elif save_string in keywords:
             tok = "<keyword, " + save_string + ">"
         elif save_string in data_types:
             tok = "<dt, " + save_string + ">"
         else:
             tok = "<id, " + save_string + ">"
+            if save_string + ", id" not in self.symbol_table.values():
+                self.symbol_table[self.symbol_count] = save_string + ", id"
+                self.symbol_count += 1
         return tok
 
     # Detect float numbers
@@ -211,4 +218,4 @@ class Lexer:
         else:
             pass
 
-        return token
+        return token, self.symbol_table, self.symbol_count
