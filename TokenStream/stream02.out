@@ -1,4 +1,4 @@
-<comment></><newline>
+<Comment></><newline>
 <keyword, void><blank><id, doMath><punctuator, (><dt, int><blank><id, a><punctuator, ,><blank><dt, int><blank><id, b><punctuator, ,><blank><dt, float><blank><id, val><blank><id, c><punctuator, )><blank><punctuator, {><newline>
 <tab><dt, int><blank><id, add><blank><assign, =><blank><id, a><blank><+><blank><id, b><blank><+><id, c><punctuator, ;><newline>
 <tab><dt, float><blank><id, mult><blank><assign, =><blank><id, a><blank><*><id, b><blank><*><blank><id, c><punctuator, ;><newline>

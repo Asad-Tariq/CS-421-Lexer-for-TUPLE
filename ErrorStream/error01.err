@@ -1,0 +1,5 @@
+<line#>  <error_found>  
+3        Comment not closed properly!
+5        'ababa (Invalid char constant!)
+7        faf112 (Invalid Identifier!)
+11       23.5.9 (Invalid Float!)

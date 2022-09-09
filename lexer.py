@@ -1,6 +1,5 @@
 from tuple_spec import *
 
-
 class Lexer:
     def __init__(self, input_stream, symbol_table, symbol_count) -> None:
         self.input = input_stream + '\n'
@@ -8,6 +7,7 @@ class Lexer:
         self.curPos = -1
         self.symbol_table = symbol_table
         self.symbol_count = symbol_count
+        self.error = ""
         self.nextChar()
 
     # Process the next character
@@ -32,11 +32,12 @@ class Lexer:
             while self.curChar != "$":
                 self.nextChar()
             if self.peek() == "/":
-                tok = "<comment>"
+                tok = "<Comment>"
                 self.nextChar()
                 self.nextChar()
             elif self.peek() == "\n":
-                tok = "<comment not closed properly!>"
+                tok = "<Invalid Comment>"
+                self.error = "Comment not closed properly!"
                 while self.curChar != "\n":
                     self.nextChar()
             elif self.peek() == "$":
@@ -60,9 +61,12 @@ class Lexer:
             save_string += self.curChar
             self.nextChar()
         if self.curChar == ".":
-            tok = "<Invalid Identifier!>"
+            tok = "<Invalid identifier!>"
+            self.error = save_string + " (Invalid Identifier!)"
+            self.nextChar()
         elif self.curChar not in whitespaces.keys() and self.curChar not in punctuation and self.curChar not in arithmetic_op:
             tok = "<Invalid Identifier!>"
+            self.error = save_string + " (Invalid Identifier!)"
         elif save_string in keywords:
             tok = "<keyword, " + save_string + ">"
         elif save_string in data_types:
@@ -79,22 +83,83 @@ class Lexer:
         save_string = ""
         if self.peek() not in digits and self.peek() != "E":
             while self.curChar != "\n":
+                save_string += self.curChar
                 self.nextChar()
             return save_string, False
         else:
             save_string += self.curChar
             self.nextChar()
-            while self.curChar in digits or self.curChar == "E":
-                save_string += self.curChar
-                self.nextChar()
-            return save_string, True
+            print("cur char", self.curChar)
+            if self.curChar in digits:
+                if self.peek() in [punc for punc in punctuation if punc != "."] or self.peek() in whitespaces.keys():
+                    save_string += self.curChar
+                    self.nextChar()
+                    return save_string, True
+                if self.peek() == "E":
+                    save_string += self.curChar
+                    self.nextChar()
+                    if self.peek() in digits or self.peek() in letters:
+                        while self.curChar != "\n":
+                            save_string += self.curChar
+                            self.nextChar()
+                        return save_string, False
+                    else:
+                        save_string += self.curChar
+                        self.nextChar()
+                        return save_string, True 
+                elif self.peek() in digits:
+                    while self.curChar in digits:
+                        save_string += self.curChar
+                        self.nextChar()
+                    print("cur char2", self.curChar)
+                    if self.curChar in [punc for punc in punctuation if punc != "."] or self.curChar in whitespaces.keys():
+                        return save_string, True
+                    if self.curChar not in digits:
+                        print("HERE")
+                        if self.curChar == "E":
+                            print("HERE")
+                            if self.peek() not in digits:
+                                while self.curChar not in [punc for punc in punctuation if punc != "."] and self.curChar not in whitespaces.keys():
+                                    save_string += self.curChar
+                                    self.nextChar()
+                                return save_string, True
+                        while self.curChar != "\n":
+                            save_string += self.curChar
+                            self.nextChar()
+                        return save_string, False
+                    if self.peek() == "E":
+                        save_string += self.curChar
+                        self.nextChar()
+                        if self.peek() in digits or self.peek() in letters:
+                            while self.curChar != "\n":
+                                save_string += self.curChar
+                                self.nextChar()
+                            return save_string, False
+                        else:
+                            save_string += self.curChar
+                            self.nextChar()
+                            return save_string, True
+                    else:
+                        return save_string, True
+                else:
+                    while self.curChar not in [punc for punc in punctuation if punc != "."] and self.curChar not in whitespaces.keys():
+                        save_string += self.curChar
+                        self.nextChar()
+                    return save_string, False 
+            else:
+                while self.curChar != "\n":
+                    save_string += self.curChar
+                    self.nextChar()
+                return save_string, False
+            
 
     # Detect digits
     def checkDigit(self):
         save_string = ""
         tok = ""
         if self.peek() in letters:
-            print("<Unsupported!>")
+            tok = "<Unsupported character>"
+            self.error = save_string + " (Unsupported character found with digit!)"
         else:
             while self.curChar in digits:
                 save_string += self.curChar
@@ -105,6 +170,7 @@ class Lexer:
                     tok = "<float, " + save_string + floatString + ">"
                 else:
                     tok = "<Invalid Float!>"
+                    self.error = save_string + floatString + " (Invalid Float!)"
             else:
                 tok = "<num, " + save_string + ">"
 
@@ -165,15 +231,16 @@ class Lexer:
 
     # Detect character constant
     def checkCharConstant(self):
-        save_string = ""
+        save_string = self.curChar
         self.nextChar()
-        while self.curChar != "'" and self.curChar != "\n":
+        while self.curChar != "'" and self.curChar != "\n" and self.curChar not in punctuation:
             save_string += self.curChar
             self.nextChar()
         if len(save_string) == 1:
             tok = "<char_constant, " + save_string + ">"
         else:
-            tok = "<Invalid char constant!>"
+            tok = "<Invalid char constant!, " + save_string + ">"
+            self.error = save_string + " (Invalid char constant!)"
         if self.peek() != "\0":
             self.nextChar()
 
@@ -193,29 +260,28 @@ class Lexer:
 
     # Return the next token
     def getToken(self):
-        token = []
-        # print("Current char", self.curChar)
+        token = ""
         if self.curChar == "/":
-            token.append(self.checkComment())
+            token = self.checkComment()
         elif self.curChar in letters:
-            token.append(self.checkKeyDtId())
+            token = self.checkKeyDtId()
         elif self.curChar in digits:
-            token.append(self.checkDigit()) 
+            token = self.checkDigit() 
         elif self.curChar in arithmetic_op:
-            token.append(self.checkArithOp())
+            token = self.checkArithOp()
         elif self.curChar in assignment:
-            token.append(self.checkAssignOp())
+            token = self.checkAssignOp()
         elif self.curChar in relational_ops_single:
-            token.append(self.checkRelOp())
+            token = self.checkRelOp()
         elif self.curChar == "\"":
-            token.append(self.checkStringLiteral())
+            token = self.checkStringLiteral()
         elif self.curChar == "'":
-            token.append(self.checkCharConstant())
+            token = self.checkCharConstant()
         elif self.curChar in punctuation:
-            token.append(self.checkPunctuation())
+            token = self.checkPunctuation()
         elif self.curChar in whitespaces.keys():
-            token.append(self.checkWhitespaces())
+            token = self.checkWhitespaces()
         else:
-            pass
+            token = self.error = "<Character not recognised!>"
 
-        return token, self.symbol_table, self.symbol_count
+        return token, self.symbol_table, self.symbol_count, self.error
