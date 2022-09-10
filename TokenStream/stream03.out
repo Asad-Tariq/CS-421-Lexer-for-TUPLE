@@ -1,9 +1,0 @@
-<comment><newline>
-<dt, int><blank><id, main><blank><blank><blank><punctuator, (><blank><blank><blank><blank><blank><blank><blank><keyword, void><blank><blank><blank><blank><punctuator, )><blank><blank><punctuator, {><newline>
-<tab><dt, int><blank><id, arr><punctuator, [><punctuator, ]><punctuator, ;><blank><dt, int><blank><id, i><blank><assign, =><blank><num, 10><punctuator, ;><newline>
-<blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, while><blank><punctuator, (><blank><id, i><blank><rel_op, GT><blank><num, 0><punctuator, )><blank><punctuator, {><newline>
-<blank><tab><blank><blank><blank><id, arr><punctuator, [><id, i><punctuator, ]><blank><assign, =><blank><punctuator, (><id, i><blank><*><blank><id, i><punctuator, )><blank><+><blank><float, 2.0><blank><*><blank><num, 3><punctuator, ;><newline>
-<blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><id, i><blank><assign, =><blank><id, i><blank><-><blank><num, 1><punctuator, ;><newline>
-<tab><punctuator, }><newline>
-<keyword, return><blank><num, 0><punctuator, ;><newline>
-<punctuator, }>

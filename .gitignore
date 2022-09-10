@@ -1,4 +1,4 @@
 *.pdf
-venv/
+Part 2/venv/
 __pycache__/
 .idea/
