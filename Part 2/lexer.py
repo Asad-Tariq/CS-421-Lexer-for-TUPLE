@@ -4,70 +4,70 @@ from tuple_spec import *
 class Lexer:
     def __init__(self, input_stream, symbol_table, symbol_count) -> None:
         self.input = input_stream + '\n'
-        self.curChar = ''
-        self.curPos = -1
+        self.cur_char = ''
+        self.cur_pos = -1
         self.symbol_table = symbol_table
         self.symbol_count = symbol_count
         self.error = ""
-        self.nextChar()
+        self.next_char()
 
     # Process the next character
-    def nextChar(self):
-        self.curPos += 1
-        if self.curPos >= len(self.input):
-            self.curChar = '\0'  # EOF char
+    def next_char(self):
+        self.cur_pos += 1
+        if self.cur_pos >= len(self.input):
+            self.cur_char = '\0'  # EOF char
         else:
-            self.curChar = self.input[self.curPos]
+            self.cur_char = self.input[self.cur_pos]
 
     # Return the lookahead character
     def peek(self):
-        if self.curPos + 1 >= len(self.input):
+        if self.cur_pos + 1 >= len(self.input):
             return '\0'
-        return self.input[self.curPos + 1]
+        return self.input[self.cur_pos + 1]
 
     # Detect comment
-    def checkComment(self):
+    def check_comment(self):
         tok = ""
         if self.peek() == "$":
-            self.nextChar()
-            self.nextChar()
-            while self.curChar != "$":
-                self.nextChar()
+            self.next_char()
+            self.next_char()
+            while self.cur_char != "$":
+                self.next_char()
             if self.peek() == "/":
                 tok = "<Comment>"
-                self.nextChar()
-                self.nextChar()
+                self.next_char()
+                self.next_char()
             elif self.peek() == "\n":
                 tok = "<Invalid Comment>"
                 self.error = "Comment not closed properly!"
-                while self.curChar != "\n":
-                    self.nextChar()
+                while self.cur_char != "\n":
+                    self.next_char()
             elif self.peek() == "$":
                 while self.peek() != "/":
-                    self.nextChar()
+                    self.next_char()
                 if self.peek() == "/":
                     tok = "<comment>"
-                    self.nextChar()
-                    self.nextChar()
-        elif self.curChar in arithmetic_op:
-            tok = "<" + self.curChar + ">"
-            self.nextChar()
+                    self.next_char()
+                    self.next_char()
+        elif self.cur_char in arithmetic_op:
+            tok = "<" + self.cur_char + ">"
+            self.next_char()
 
         return tok
 
     # Detect keyword, datatype, identifier
-    def checkKeyDtId(self):
+    def check_key_dt_id(self):
         save_string = ""
         tok = ""
-        while self.curChar in letters or self.curChar in digits or self.curChar in underscore:
-            save_string += self.curChar
-            self.nextChar()
-        if self.curChar == ".":
+        while self.cur_char in letters or self.cur_char in digits or self.cur_char in underscore:
+            save_string += self.cur_char
+            self.next_char()
+        if self.cur_char == ".":
             tok = "<Invalid identifier!>"
-            self.error = f'{save_string}{self.curChar} (Invalid Identifier!)'
-            self.nextChar()
-        elif self.curChar not in whitespaces.keys() and self.curChar not in punctuation\
-                and self.curChar not in arithmetic_op:
+            self.error = f'{save_string}{self.cur_char} (Invalid Identifier!)'
+            self.next_char()
+        elif self.cur_char not in whitespaces.keys() and self.cur_char not in punctuation\
+                and self.cur_char not in arithmetic_op:
             tok = "<Invalid Identifier!>"
             self.error = f'{save_string} (Invalid Identifier!)'
         elif save_string in keywords:
@@ -85,88 +85,88 @@ class Lexer:
     def checkFloat(self):
         save_string = ""
         if self.peek() not in digits and self.peek() != "E":
-            while self.curChar != "\n":
-                save_string += self.curChar
-                self.nextChar()
+            while self.cur_char != "\n":
+                save_string += self.cur_char
+                self.next_char()
             return save_string, False
         else:
-            save_string += self.curChar
-            self.nextChar()
-            if self.curChar in digits:
+            save_string += self.cur_char
+            self.next_char()
+            if self.cur_char in digits:
                 if self.peek() in [punc for punc in punctuation if punc != "."]\
                         or self.peek() in whitespaces.keys():
-                    save_string += self.curChar
-                    self.nextChar()
+                    save_string += self.cur_char
+                    self.next_char()
                     return save_string, True
                 if self.peek() == "E":
-                    save_string += self.curChar
-                    self.nextChar()
+                    save_string += self.cur_char
+                    self.next_char()
                     if self.peek() in digits or self.peek() in letters:
-                        while self.curChar != "\n":
-                            save_string += self.curChar
-                            self.nextChar()
+                        while self.cur_char != "\n":
+                            save_string += self.cur_char
+                            self.next_char()
                         return save_string, False
                     else:
-                        save_string += self.curChar
-                        self.nextChar()
+                        save_string += self.cur_char
+                        self.next_char()
                         return save_string, True 
                 elif self.peek() in digits:
-                    while self.curChar in digits:
-                        save_string += self.curChar
-                        self.nextChar()
-                    if self.curChar in [punc for punc in punctuation if punc != "."]\
-                            or self.curChar in whitespaces.keys():
+                    while self.cur_char in digits:
+                        save_string += self.cur_char
+                        self.next_char()
+                    if self.cur_char in [punc for punc in punctuation if punc != "."]\
+                            or self.cur_char in whitespaces.keys():
                         return save_string, True
-                    if self.curChar not in digits:
-                        if self.curChar == "E":
+                    if self.cur_char not in digits:
+                        if self.cur_char == "E":
                             if self.peek() not in digits:
-                                while self.curChar not in [punc for punc in punctuation if punc != "."]\
-                                        and self.curChar not in whitespaces.keys():
-                                    save_string += self.curChar
-                                    self.nextChar()
+                                while self.cur_char not in [punc for punc in punctuation if punc != "."]\
+                                        and self.cur_char not in whitespaces.keys():
+                                    save_string += self.cur_char
+                                    self.next_char()
                                 return save_string, True
-                        while self.curChar != "\n":
-                            save_string += self.curChar
-                            self.nextChar()
+                        while self.cur_char != "\n":
+                            save_string += self.cur_char
+                            self.next_char()
                         return save_string, False
                     if self.peek() == "E":
-                        save_string += self.curChar
-                        self.nextChar()
+                        save_string += self.cur_char
+                        self.next_char()
                         if self.peek() in digits or self.peek() in letters:
-                            while self.curChar != "\n":
-                                save_string += self.curChar
-                                self.nextChar()
+                            while self.cur_char != "\n":
+                                save_string += self.cur_char
+                                self.next_char()
                             return save_string, False
                         else:
-                            save_string += self.curChar
-                            self.nextChar()
+                            save_string += self.cur_char
+                            self.next_char()
                             return save_string, True
                     else:
                         return save_string, True
                 else:
-                    while self.curChar not in [punc for punc in punctuation if punc != "."]\
-                            and self.curChar not in whitespaces.keys():
-                        save_string += self.curChar
-                        self.nextChar()
+                    while self.cur_char not in [punc for punc in punctuation if punc != "."]\
+                            and self.cur_char not in whitespaces.keys():
+                        save_string += self.cur_char
+                        self.next_char()
                     return save_string, False 
             else:
-                while self.curChar != "\n":
-                    save_string += self.curChar
-                    self.nextChar()
+                while self.cur_char != "\n":
+                    save_string += self.cur_char
+                    self.next_char()
                 return save_string, False
 
     # Detect digits
-    def checkDigit(self):
+    def check_digit(self):
         save_string = ""
         tok = ""
         if self.peek() in letters:
             tok = "<Unsupported character>"
             self.error = f'{save_string} (Unsupported character found with digit!)'
         else:
-            while self.curChar in digits:
-                save_string += self.curChar
-                self.nextChar()
-            if self.curChar == ".":
+            while self.cur_char in digits:
+                save_string += self.cur_char
+                self.next_char()
+            if self.cur_char == ".":
                 floatString, isFloat = self.checkFloat()
                 if isFloat:
                     tok = f'<float, {save_string}{floatString}>'
@@ -179,110 +179,110 @@ class Lexer:
         return tok
 
     # Detect arithmetic operator
-    def checkArithOp(self):
+    def check_arith_op(self):
         save_string = ""
-        if self.curChar == "-" and self.peek() in digits:
-            save_string += self.curChar
-            self.nextChar()
-            while self.curChar in digits:
-                save_string += self.curChar
-                self.nextChar()
+        if self.cur_char == "-" and self.peek() in digits:
+            save_string += self.cur_char
+            self.next_char()
+            while self.cur_char in digits:
+                save_string += self.cur_char
+                self.next_char()
             tok = f'<num, {save_string}>'
         else:
-            tok = f'<{self.curChar}>'
-            self.nextChar()
+            tok = f'<{self.cur_char}>'
+            self.next_char()
         return tok
 
     # Detect assignment operator
-    def checkAssignOp(self):
+    def check_assign_op(self):
         if self.peek() != "=":
-            tok = f'<assign, {self.curChar}>'
-            self.nextChar()
+            tok = f'<assign, {self.cur_char}>'
+            self.next_char()
             return tok
         else:
-            tok = self.checkRelOp()
-            self.nextChar()
+            tok = self.check_rel_op()
+            self.next_char()
 
         return tok
 
     # Detect relational operator
-    def checkRelOp(self):
+    def check_rel_op(self):
         if self.peek() == "=":
-            key = self.curChar + "="
+            key = self.cur_char + "="
             tok = f'<rel_op, {relational_op_double[key]}>'
-            self.nextChar()
-            self.nextChar()
+            self.next_char()
+            self.next_char()
         else:
-            key = self.curChar
+            key = self.cur_char
             tok = f'<rel_op, {relational_ops_single[key]}>'
-            self.nextChar()
+            self.next_char()
 
         return tok
 
     # Detect string literal
-    def checkStringLiteral(self):
+    def check_string_literal(self):
         save_string = ""
-        self.nextChar()
-        while self.curChar != "\"":
-            save_string += self.curChar
-            self.nextChar()
+        self.next_char()
+        while self.cur_char != "\"":
+            save_string += self.cur_char
+            self.next_char()
         tok = f'<literal, {save_string}>'
-        self.nextChar()
+        self.next_char()
 
         return tok
 
     # Detect character constant
-    def checkCharConstant(self):
-        save_string = self.curChar
-        self.nextChar()
-        while self.curChar != "'" and self.curChar != "\n" and self.curChar not in punctuation:
-            save_string += self.curChar
-            self.nextChar()
+    def check_char_const(self):
+        save_string = self.cur_char
+        self.next_char()
+        while self.cur_char != "'" and self.cur_char != "\n" and self.cur_char not in punctuation:
+            save_string += self.cur_char
+            self.next_char()
         if len(save_string) == 1:
             tok = f'<char_constant, {save_string}>'
         else:
             tok = f'<Invalid char constant!, {save_string}>'
             self.error = f'{save_string} (Invalid char constant!)'
         if self.peek() != "\0":
-            self.nextChar()
+            self.next_char()
 
         return tok
 
-    # Detect punctutation
-    def checkPunctuation(self):
-        tok = f'<punctuator, {self.curChar}>'
-        self.nextChar()
+    # Detect punctuation
+    def check_punctuation(self):
+        tok = f'<punctuator, {self.cur_char}>'
+        self.next_char()
         return tok
 
     # Detect whitespaces
-    def checkWhitespaces(self):
-        tok = f'<{whitespaces[self.curChar]}>'
-        self.nextChar()
+    def check_whitespaces(self):
+        tok = f'<{whitespaces[self.cur_char]}>'
+        self.next_char()
         return tok
 
     # Return the next token
-    def getToken(self):
+    def get_token(self):
         token = ""
-        if self.curChar == "/":
-            token = self.checkComment()
-        elif self.curChar in letters:
-            token = self.checkKeyDtId()
-        elif self.curChar in digits:
-            token = self.checkDigit() 
-        elif self.curChar in arithmetic_op:
-            token = self.checkArithOp()
-        elif self.curChar in assignment:
-            token = self.checkAssignOp()
-        elif self.curChar in relational_ops_single:
-            token = self.checkRelOp()
-        elif self.curChar == "\"":
-            token = self.checkStringLiteral()
-        elif self.curChar == "'":
-            token = self.checkCharConstant()
-        elif self.curChar in punctuation:
-            token = self.checkPunctuation()
-        elif self.curChar in whitespaces.keys():
-            token = self.checkWhitespaces()
+        if self.cur_char == "/":
+            token = self.check_comment()
+        elif self.cur_char in letters:
+            token = self.check_key_dt_id()
+        elif self.cur_char in digits:
+            token = self.check_digit()
+        elif self.cur_char in arithmetic_op:
+            token = self.check_arith_op()
+        elif self.cur_char in assignment:
+            token = self.check_assign_op()
+        elif self.cur_char in relational_ops_single:
+            token = self.check_rel_op()
+        elif self.cur_char == "\"":
+            token = self.check_string_literal()
+        elif self.cur_char == "'":
+            token = self.check_char_const()
+        elif self.cur_char in punctuation:
+            token = self.check_punctuation()
+        elif self.cur_char in whitespaces.keys():
+            token = self.check_whitespaces()
         else:
             token = self.error = "<Character not recognised!>"
 

@@ -30,7 +30,7 @@ def tokenize(lexer, symbol_table, symbol_count, error_stream, token_stream, line
     # keep tokenizing till EOF encountered
     while lexer.peek() != '\0':
         # tokenize the given line
-        token, new_symbl_tbl, new_symb_count, error = lexer.getToken()
+        token, new_symbl_tbl, new_symb_count, error = lexer.get_token()
 
         # add the new token to the current line's stream
         try:
