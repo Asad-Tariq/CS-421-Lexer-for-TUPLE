@@ -64,11 +64,12 @@ class Lexer:
             self.nextChar()
         if self.curChar == ".":
             tok = "<Invalid identifier!>"
-            self.error = save_string + self.curChar + " (Invalid Identifier!)"
+            self.error = f'{save_string}{self.curChar} (Invalid Identifier!)'
             self.nextChar()
-        elif self.curChar not in whitespaces.keys() and self.curChar not in punctuation and self.curChar not in arithmetic_op:
+        elif self.curChar not in whitespaces.keys() and self.curChar not in punctuation\
+                and self.curChar not in arithmetic_op:
             tok = "<Invalid Identifier!>"
-            self.error = save_string + " (Invalid Identifier!)"
+            self.error = f'{save_string} (Invalid Identifier!)'
         elif save_string in keywords:
             tok = "<keyword, " + save_string + ">"
         elif save_string in data_types:
@@ -91,9 +92,9 @@ class Lexer:
         else:
             save_string += self.curChar
             self.nextChar()
-            print("cur char", self.curChar)
             if self.curChar in digits:
-                if self.peek() in [punc for punc in punctuation if punc != "."] or self.peek() in whitespaces.keys():
+                if self.peek() in [punc for punc in punctuation if punc != "."]\
+                        or self.peek() in whitespaces.keys():
                     save_string += self.curChar
                     self.nextChar()
                     return save_string, True
@@ -113,15 +114,14 @@ class Lexer:
                     while self.curChar in digits:
                         save_string += self.curChar
                         self.nextChar()
-                    print("cur char2", self.curChar)
-                    if self.curChar in [punc for punc in punctuation if punc != "."] or self.curChar in whitespaces.keys():
+                    if self.curChar in [punc for punc in punctuation if punc != "."]\
+                            or self.curChar in whitespaces.keys():
                         return save_string, True
                     if self.curChar not in digits:
-                        print("HERE")
                         if self.curChar == "E":
-                            print("HERE")
                             if self.peek() not in digits:
-                                while self.curChar not in [punc for punc in punctuation if punc != "."] and self.curChar not in whitespaces.keys():
+                                while self.curChar not in [punc for punc in punctuation if punc != "."]\
+                                        and self.curChar not in whitespaces.keys():
                                     save_string += self.curChar
                                     self.nextChar()
                                 return save_string, True
@@ -144,7 +144,8 @@ class Lexer:
                     else:
                         return save_string, True
                 else:
-                    while self.curChar not in [punc for punc in punctuation if punc != "."] and self.curChar not in whitespaces.keys():
+                    while self.curChar not in [punc for punc in punctuation if punc != "."]\
+                            and self.curChar not in whitespaces.keys():
                         save_string += self.curChar
                         self.nextChar()
                     return save_string, False 
@@ -160,7 +161,7 @@ class Lexer:
         tok = ""
         if self.peek() in letters:
             tok = "<Unsupported character>"
-            self.error = save_string + " (Unsupported character found with digit!)"
+            self.error = f'{save_string} (Unsupported character found with digit!)'
         else:
             while self.curChar in digits:
                 save_string += self.curChar
@@ -168,10 +169,10 @@ class Lexer:
             if self.curChar == ".":
                 floatString, isFloat = self.checkFloat()
                 if isFloat:
-                    tok = "<float, " + save_string + floatString + ">"
+                    tok = f'<float, {save_string}{floatString}>'
                 else:
                     tok = "<Invalid Float!>"
-                    self.error = save_string + floatString + " (Invalid Float!)"
+                    self.error = f'{save_string}{floatString} (Invalid Float!)'
             else:
                 tok = "<num, " + save_string + ">"
 
@@ -186,16 +187,16 @@ class Lexer:
             while self.curChar in digits:
                 save_string += self.curChar
                 self.nextChar()
-            tok = "<num, " + save_string + ">" 
+            tok = f'<num, {save_string}>'
         else:
-            tok = "<" + self.curChar + ">"
+            tok = f'<{self.curChar}>'
             self.nextChar()
         return tok
 
     # Detect assignment operator
     def checkAssignOp(self):
         if self.peek() != "=":
-            tok = "<assign, " + self.curChar + ">"
+            tok = f'<assign, {self.curChar}>'
             self.nextChar()
             return tok
         else:
@@ -208,12 +209,12 @@ class Lexer:
     def checkRelOp(self):
         if self.peek() == "=":
             key = self.curChar + "="
-            tok = "<rel_op, " + relational_op_double[key] + ">"
+            tok = f'<rel_op, {relational_op_double[key]}>'
             self.nextChar()
             self.nextChar()
         else:
             key = self.curChar
-            tok = "<rel_op, " + relational_ops_single[key] + ">"
+            tok = f'<rel_op, {relational_ops_single[key]}>'
             self.nextChar()
 
         return tok
@@ -225,7 +226,7 @@ class Lexer:
         while self.curChar != "\"":
             save_string += self.curChar
             self.nextChar()
-        tok = "<literal, " + save_string + ">"
+        tok = f'<literal, {save_string}>'
         self.nextChar()
 
         return tok
@@ -238,10 +239,10 @@ class Lexer:
             save_string += self.curChar
             self.nextChar()
         if len(save_string) == 1:
-            tok = "<char_constant, " + save_string + ">"
+            tok = f'<char_constant, {save_string}>'
         else:
-            tok = "<Invalid char constant!, " + save_string + ">"
-            self.error = save_string + " (Invalid char constant!)"
+            tok = f'<Invalid char constant!, {save_string}>'
+            self.error = f'{save_string} (Invalid char constant!)'
         if self.peek() != "\0":
             self.nextChar()
 
@@ -249,13 +250,13 @@ class Lexer:
 
     # Detect punctutation
     def checkPunctuation(self):
-        tok = "<punctuator, " + self.curChar + ">"
+        tok = f'<punctuator, {self.curChar}>'
         self.nextChar()
         return tok
 
     # Detect whitespaces
     def checkWhitespaces(self):
-        tok = "<" + whitespaces[self.curChar] + ">"
+        tok = f'<{whitespaces[self.curChar]}>'
         self.nextChar()
         return tok
 
@@ -285,4 +286,8 @@ class Lexer:
         else:
             token = self.error = "<Character not recognised!>"
 
-        return token, self.symbol_table, self.symbol_count, self.error
+        # reset error string for next token
+        err_cpy = self.error
+        self.error = ""
+
+        return token, self.symbol_table, self.symbol_count, err_cpy
