@@ -1,0 +1,24 @@
+<Comment></><newline>
+<keyword, void><blank><id, doMath><punctuator, (><dt, int><blank><id, a><punctuator, ,><blank><dt, int><blank><id, b><punctuator, ,><blank><dt, float><blank><id, val><blank><id, c><punctuator, )><blank><punctuator, {><newline>
+<tab><dt, int><blank><id, add><blank><assign, =><blank><id, a><blank><+><blank><id, b><blank><+><id, c><punctuator, ;><newline>
+<tab><dt, float><blank><id, mult><blank><assign, =><blank><id, a><blank><*><id, b><blank><*><blank><id, c><punctuator, ;><newline>
+<tab><dt, int><blank><id, div><blank><assign, =><blank><id, a></><blank><punctuator, (><id, b><blank></><blank><id, c><punctuator, )><punctuator, ;><newline>
+<keyword, return><blank><id, add><blank><+><blank><id, mult><punctuator, ;><newline>
+<punctuator, }><newline>
+<newline>
+<dt, float><blank><id, count><punctuator, (><dt, int><blank><id, a><punctuator, )><newline>
+<punctuator, {><newline>
+<blank><keyword, while><blank><punctuator, (><id, b><blank><rel_op, EQ><keyword, true><punctuator, )><newline>
+<punctuator, {><blank><newline>
+<blank><blank><blank><blank><blank><keyword, str><blank><id, name><blank><assign, =><blank><literal, haBiB><punctuator, ;><blank><newline>
+<blank><blank><blank><blank><blank><dt, float><blank><id, a><blank><assign, =><blank><id, a><blank><+><blank><float, 0.01E><punctuator, ;><newline>
+<blank><blank><blank><blank><blank><blank><keyword, if><blank><punctuator, (><id, a><blank><rel_op, GE><blank><float, 9.25><blank><keyword, and><blank><id, name><blank><rel_op, EQ><literal, HABIB><blank><punctuator, )><blank><punctuator, {><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, for><blank><punctuator, (><dt, int><blank><id, i><blank><assign, =><blank><num, 100><punctuator, ;><blank><id, i><blank><rel_op, GE><blank><num, 0><punctuator, ;><blank><id, i><blank><assign, =><blank><id, i><blank><num, -1><punctuator, )><blank><punctuator, {><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><id, a><blank><assign, =><blank><id, a><^><id, i><punctuator, ;><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><punctuator, }><newline>
+<blank><blank><blank><blank><blank><punctuator, }><blank><newline>
+<blank><blank><blank><blank><blank><keyword, else><blank><punctuator, {><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, break><punctuator, ;><newline>
+<blank><blank><blank><blank><blank><punctuator, }><newline>
+<punctuator, }><tab><newline>
+<tab><tab><tab>
