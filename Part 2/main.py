@@ -3,13 +3,13 @@ from lexer import *
 
 def write_token_stream(token_stream, file_num):
     # write the file
-    with open(f'TokenStream\\stream0{file_num}.out', "w") as stream:
+    with open(f'TokenStream\\test0{file_num}.out', "w") as stream:
         stream.write(''.join(token_stream.values()))
 
 
 def write_symb_tbl(symbol_table, file_num):
     # write the file
-    with open(f'SymbolTable\\table0{file_num}.sym', "w") as table:
+    with open(f'SymbolTable\\test0{file_num}.sym', "w") as table:
         table.write("{:<8} {:<15}".format('Key', 'Symbol'))
         table.write('\n')
         for k, v in symbol_table.items():
@@ -18,7 +18,7 @@ def write_symb_tbl(symbol_table, file_num):
 
 def write_error_stream(error_stream, file_num):
     # write the file
-    with open(f'ErrorStream\\error0{file_num}.err', "w") as error:
+    with open(f'ErrorStream\\test0{file_num}.err', "w") as error:
         error.write("{:<8} {:<15}".format('<line#>', '<error_found>'))
         error.write('\n')
         for k, v in error_stream.items():
