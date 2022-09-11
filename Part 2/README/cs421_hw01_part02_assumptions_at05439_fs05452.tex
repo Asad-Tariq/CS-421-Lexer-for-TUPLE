@@ -29,6 +29,9 @@ elucidate some of the assumptions taken, conventions followed and references use
     \item With reference to entries within the symbol table, the decision was made not to include numeric constants such as: \texttt{2.3}, \texttt{-5}, \texttt{10} etc. Per the
     current implementation of lexical analyzer, the symbol table only records identifiers.
     \item As of now, all arithmetic operations are dealt with as part of a single category. Delineation of arithmetic operators with respect to precedence\footnote{As discussed in the lecture session of $9^{th}$ September.} is not implemented.
+    \item For purposes of better readability and ease in visual-inspection-based verification of the output of the lexical analyzer, the generated token stream is not written to the relevant \texttt{.out} file
+    in a single line (i.e., a literal single stream). Rather, the generated \texttt{*.out} files have the token stream printed out line-by-line. This is purely done 
+    to make verification of the generated stream easier. 
     \item This \href{https://austinhenley.com/blog/teenytinycompiler1.html}{reference} proved useful when starting out with implementation of the analyzer.
 \end{itemize}
 
