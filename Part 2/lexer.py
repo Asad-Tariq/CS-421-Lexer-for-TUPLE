@@ -25,9 +25,9 @@ class Lexer:
         self.symbol_table = symbol_table
         self.symbol_count = symbol_count
         self.error = ""
-        self.next_char()
+        self.__next_char()
 
-    def next_char(self, step: int = 1) -> None:
+    def __next_char(self, step: int = 1) -> None:
         """Updates the file pointer by the given step - a default jump of
         one - and in turn, updates the current character being processed.
 
@@ -61,7 +61,24 @@ class Lexer:
             return '\0'
         return self.input[self.cur_pos + 1]
 
-    def check_comment(self) -> str:
+    def __find_symb_tbl_ix(self, identifier: str) -> int:
+        """Retrieves the symbol table index for an identifier that
+        is already recorded in the symbol table.
+
+        Args:
+        - self: mandatory object reference.
+        - identified: the identifier to look for.
+
+        Returns:
+        an integer corresponding to the specified identifier's index
+        in the symbol table
+        """
+
+        for ix, val in self.symbol_table.items():
+            if val == f'{identifier}, id':
+                return ix
+
+    def __check_comment(self) -> str:
         """Evaluates and returns a token corresponding to whether or not
         a valid comment is encountered or not.
 
@@ -74,31 +91,31 @@ class Lexer:
 
         token = ""
         if self.peek() == "$":
-            self.next_char(2)
+            self.__next_char(2)
             while self.cur_char != "$":
-                self.next_char()
+                self.__next_char()
             if self.peek() == "/":
                 token = "<Comment>"
-                self.next_char(2)
+                self.__next_char(2)
             elif self.peek() == "\n":
                 token = "<Invalid Comment>"
                 self.error = "Comment not closed properly!"
                 while self.cur_char != "\n":
-                    self.next_char()
+                    self.__next_char()
             elif self.peek() == "$":
                 while self.peek() != "/":
-                    self.next_char()
+                    self.__next_char()
                 if self.peek() == "/":
                     token = "<comment>"
-                    self.next_char(2)
+                    self.__next_char(2)
         elif self.cur_char in arithmetic_op:
             # if a '/' is encountered, record as arithmetic operator
             token = f'<{self.cur_char}>'
-            self.next_char()
+            self.__next_char()
 
         return token
 
-    def check_key_dt_id(self) -> str:
+    def __check_key_dt_id(self) -> str:
         """Evaluates and returns a token corresponding to whether or not
         a keyword, data-type or (valid/invalid) identifier is encountered.
 
@@ -114,11 +131,11 @@ class Lexer:
         token = ""
         while self.cur_char in letters or self.cur_char in digits or self.cur_char in underscore:
             save_string += self.cur_char
-            self.next_char()
+            self.__next_char()
         if self.cur_char == ".":
             token = "<Invalid identifier!>"
             self.error = f'{save_string}{self.cur_char} (Invalid Identifier!)'
-            self.next_char()
+            self.__next_char()
         elif self.cur_char not in whitespaces.keys() and self.cur_char not in punctuation \
                 and self.cur_char not in arithmetic_op:
             token = "<Invalid Identifier!>"
@@ -128,14 +145,16 @@ class Lexer:
         elif save_string in data_types:
             token = f'<dt, {save_string}>'
         else:
-            token = f'<id, {save_string}>'
             if f'{save_string}, id' not in self.symbol_table.values():
                 self.symbol_table[self.symbol_count] = f'{save_string}, id'
+                token = f'<id, {self.symbol_count}>'
                 self.symbol_count += 1
+            else:
+                token = f'<id, {self.__find_symb_tbl_ix(save_string)}>'
 
         return token
 
-    def checkFloat(self) -> Tuple[str, bool]:
+    def __checkFloat(self) -> Tuple[str, bool]:
         """Evaluates and returns a string and a boolean flag corresponding
         to the read float value and whether or not the value is valid/invalid,
         respectively.
@@ -152,33 +171,33 @@ class Lexer:
         if self.peek() not in digits and self.peek() != "E":
             while self.cur_char != "\n":
                 save_string += self.cur_char
-                self.next_char()
+                self.__next_char()
             return save_string, False
         else:
             save_string += self.cur_char
-            self.next_char()
+            self.__next_char()
             if self.cur_char in digits:
                 if self.peek() in [punc for punc in punctuation if punc != "."] \
                         or self.peek() in whitespaces.keys():
                     save_string += self.cur_char
-                    self.next_char()
+                    self.__next_char()
                     return save_string, True
                 if self.peek() == "E":
                     save_string += self.cur_char
-                    self.next_char()
+                    self.__next_char()
                     if self.peek() in digits or self.peek() in letters:
                         while self.cur_char != "\n":
                             save_string += self.cur_char
-                            self.next_char()
+                            self.__next_char()
                         return save_string, False
                     else:
                         save_string += self.cur_char
-                        self.next_char()
+                        self.__next_char()
                         return save_string, True
                 elif self.peek() in digits:
                     while self.cur_char in digits:
                         save_string += self.cur_char
-                        self.next_char()
+                        self.__next_char()
                     if self.cur_char in [punc for punc in punctuation if punc != "."] \
                             or self.cur_char in whitespaces.keys():
                         return save_string, True
@@ -188,23 +207,23 @@ class Lexer:
                                 while self.cur_char not in [punc for punc in punctuation if punc != "."] \
                                         and self.cur_char not in whitespaces.keys():
                                     save_string += self.cur_char
-                                    self.next_char()
+                                    self.__next_char()
                                 return save_string, True
                         while self.cur_char != "\n":
                             save_string += self.cur_char
-                            self.next_char()
+                            self.__next_char()
                         return save_string, False
                     if self.peek() == "E":
                         save_string += self.cur_char
-                        self.next_char()
+                        self.__next_char()
                         if self.peek() in digits or self.peek() in letters:
                             while self.cur_char != "\n":
                                 save_string += self.cur_char
-                                self.next_char()
+                                self.__next_char()
                             return save_string, False
                         else:
                             save_string += self.cur_char
-                            self.next_char()
+                            self.__next_char()
                             return save_string, True
                     else:
                         return save_string, True
@@ -212,15 +231,15 @@ class Lexer:
                     while self.cur_char not in [punc for punc in punctuation if punc != "."] \
                             and self.cur_char not in whitespaces.keys():
                         save_string += self.cur_char
-                        self.next_char()
+                        self.__next_char()
                     return save_string, False
             else:
                 while self.cur_char != "\n":
                     save_string += self.cur_char
-                    self.next_char()
+                    self.__next_char()
                 return save_string, False
 
-    def check_digit(self) -> str:
+    def __check_digit(self) -> str:
         """Evaluates and returns a token corresponding to the read number.
 
         Args:
@@ -238,9 +257,9 @@ class Lexer:
         else:
             while self.cur_char in digits:
                 save_string += self.cur_char
-                self.next_char()
+                self.__next_char()
             if self.cur_char == ".":
-                floatString, isFloat = self.checkFloat()
+                floatString, isFloat = self.__checkFloat()
                 if isFloat:
                     token = f'<float, {save_string}{floatString}>'
                 else:
@@ -251,7 +270,7 @@ class Lexer:
 
         return token
 
-    def check_arith_op(self) -> str:
+    def __check_arith_op(self) -> str:
         """Evaluates and returns a token corresponding to the read arithmetic
         operator or a negative numeric value.
 
@@ -265,18 +284,18 @@ class Lexer:
         save_string = ""
         if self.cur_char == "-" and self.peek() in digits:
             save_string += self.cur_char
-            self.next_char()
+            self.__next_char()
             while self.cur_char in digits:
                 save_string += self.cur_char
-                self.next_char()
+                self.__next_char()
             token = f'<num, {save_string}>'
         else:
             token = f'<{self.cur_char}>'
-            self.next_char()
+            self.__next_char()
 
         return token
 
-    def check_assign_op(self) -> str:
+    def __check_assign_op(self) -> str:
         """Evaluates and returns a token corresponding to the read assignment
         operator.
 
@@ -289,15 +308,15 @@ class Lexer:
 
         if self.peek() != "=":
             token = f'<assign, {self.cur_char}>'
-            self.next_char()
+            self.__next_char()
             return token
         else:
-            token = self.check_rel_op()
-            self.next_char()
+            token = self.__check_rel_op()
+            self.__next_char()
 
         return token
 
-    def check_rel_op(self) -> str:
+    def __check_rel_op(self) -> str:
         """Evaluates and returns a token corresponding to the read relational
         operator.
 
@@ -311,15 +330,15 @@ class Lexer:
         if self.peek() == "=":
             key = self.cur_char + "="
             tok = f'<rel_op, {relational_op_double[key]}>'
-            self.next_char(2)
+            self.__next_char(2)
         else:
             key = self.cur_char
             tok = f'<rel_op, {relational_ops_single[key]}>'
-            self.next_char()
+            self.__next_char()
 
         return tok
 
-    def check_string_literal(self) -> str:
+    def __check_string_literal(self) -> str:
         """Evaluates and returns a token corresponding to the read string
         literal.
 
@@ -331,16 +350,16 @@ class Lexer:
         """
 
         save_string = ""
-        self.next_char()
+        self.__next_char()
         while self.cur_char != "\"":
             save_string += self.cur_char
-            self.next_char()
+            self.__next_char()
         token = f'<literal, {save_string}>'
-        self.next_char()
+        self.__next_char()
 
         return token
 
-    def check_char_const(self) -> str:
+    def __check_char_const(self) -> str:
         """Evaluates and returns a token corresponding to the read character
         literal.
 
@@ -352,21 +371,21 @@ class Lexer:
         """
 
         save_string = self.cur_char
-        self.next_char()
+        self.__next_char()
         while self.cur_char != "'" and self.cur_char != "\n" and self.cur_char not in punctuation:
             save_string += self.cur_char
-            self.next_char()
+            self.__next_char()
         if len(save_string) == 1:
             token = f'<char_constant, {save_string}>'
         else:
             token = f'<Invalid char constant!, {save_string}>'
             self.error = f'{save_string} (Invalid char constant!)'
         if self.peek() != "\0":
-            self.next_char()
+            self.__next_char()
 
         return token
 
-    def check_punctuation(self) -> str:
+    def __check_punctuation(self) -> str:
         """Evaluates and returns a token corresponding to the read punctuator.
 
         Args:
@@ -377,10 +396,10 @@ class Lexer:
         """
 
         token = f'<punctuator, {self.cur_char}>'
-        self.next_char()
+        self.__next_char()
         return token
 
-    def check_whitespaces(self) -> str:
+    def __check_whitespaces(self) -> str:
         """Evaluates and returns a token corresponding to the read whitespace
         character.
 
@@ -392,7 +411,7 @@ class Lexer:
         """
 
         tok = f'<{whitespaces[self.cur_char]}>'
-        self.next_char()
+        self.__next_char()
         return tok
 
     def get_token(self) -> Tuple[str, Dict[int, str], int, str]:
@@ -410,25 +429,25 @@ class Lexer:
 
         token = ""
         if self.cur_char == "/":
-            token = self.check_comment()
+            token = self.__check_comment()
         elif self.cur_char in letters:
-            token = self.check_key_dt_id()
+            token = self.__check_key_dt_id()
         elif self.cur_char in digits:
-            token = self.check_digit()
+            token = self.__check_digit()
         elif self.cur_char in arithmetic_op:
-            token = self.check_arith_op()
+            token = self.__check_arith_op()
         elif self.cur_char in assignment:
-            token = self.check_assign_op()
+            token = self.__check_assign_op()
         elif self.cur_char in relational_ops_single:
-            token = self.check_rel_op()
+            token = self.__check_rel_op()
         elif self.cur_char == "\"":
-            token = self.check_string_literal()
+            token = self.__check_string_literal()
         elif self.cur_char == "'":
-            token = self.check_char_const()
+            token = self.__check_char_const()
         elif self.cur_char in punctuation:
-            token = self.check_punctuation()
+            token = self.__check_punctuation()
         elif self.cur_char in whitespaces.keys():
-            token = self.check_whitespaces()
+            token = self.__check_whitespaces()
         else:
             token = self.error = "<Character not recognised!>"
 
