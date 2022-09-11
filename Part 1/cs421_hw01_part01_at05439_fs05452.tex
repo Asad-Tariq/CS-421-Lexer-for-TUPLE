@@ -9,7 +9,6 @@
 \usepackage{enumitem}
 \usepackage{setspace}
 \usetikzlibrary{positioning}
-\usepackage{listings}
 \usepackage{xcolor}
 
 % Header and footer.
@@ -22,7 +21,6 @@
 
 \boxedpoints
 \printanswers
-\graphicspath{{Figures/}}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -79,10 +77,10 @@
     }
     z = i + j;
   \end{lstlisting}
-  Indicate the values assigned to \textbf{\texttt{x}} and \textbf{\texttt{z}} from Listing \ref{lst:firstSnip}.
+  Indicate the values assigned to \textbf{\texttt{x}} and \textbf{\texttt{z}} from Listing~\ref{lst:firstSnip}.
 
   \begin{solution}
-    On examination of the given \texttt{C} code in Listing \ref{lst:firstSnip}, the values of \texttt{x} and \texttt{z} are as follows:
+    On examination of the given \texttt{C} code in Listing~\ref{lst:firstSnip}, the values of \texttt{x} and \texttt{z} are as follows:
     \begin{itemize}
       \item \texttt{x} = 11
       \item \texttt{z} = 11
@@ -100,14 +98,16 @@
   \end{lstlisting}
 
   \begin{solution}
-    The output of the code in Listing \ref{lst:secSnip} is as follows:\\3\\2
+    The output of the code in Listing~\ref{lst:secSnip} is as follows:\\3\\2
   \end{solution}
 
   \question[1]
-  Construct a regular expression to recognize \textit{currency} numbers in dollars. It should be a positive decimal number rounded to the nearest one-hundredth. Currency numbers begin with the dollar sign \$, have commas separating each group of three digits to the left of the decimal point, and end with two digits to the right of the decimal point, for example, \$8,937.43 and \$7,777,777.7.
+  Construct a regular expression to recognize \textit{currency} numbers in dollars.
+  It should be a positive decimal number rounded to the nearest one-hundredth.
+  Currency numbers begin with the dollar sign \$, have commas separating each group of three digits to the left of the decimal point, and end with two digits to the right of the decimal point, for example, \$8,937.43 and \$7,777,777.7.
   
   \begin{solution}
-    For construction of the required regular expression, we shall be relying on Table \ref{tab:Table 1}.
+    For construction of the required regular expression, we shall be relying on Table~\ref{tab:Table 1}.
     \begin{table}[H]
       \begin{center}
           \begin{tabular}{ |c|c|c| } 
@@ -137,7 +137,7 @@
       \end{center}
       \caption{\label{tab:Table 1}A modification of the `\texttt{Lex} regular expressions' table from Section 3.3 (Figure 3.8) of the \textit{Dragon Book}.}
   \end{table}
-  Now, using Table \ref{tab:Table 1}, we construct the following regular expression:
+  Now, using Table~\ref{tab:Table 1}, we construct the following regular expression:
   
   \begin{center}
     \^{}\textbackslash\$\textbackslash \(d\)\{1, 3\}(,\textbackslash \(d\)\{3\})*(\textbackslash .\textbackslash \(d\)\textbackslash \(d\))\$
@@ -150,7 +150,6 @@
     \item (,\textbackslash \(d\)\{3\})*: A group of characters - a comma followed by exactly three digits - that may appear zero or many times.
     \item (\textbackslash .\textbackslash \(d\)\textbackslash \(d\))\$: The final (i.e., \textit{ending}) portion of the string should be a decimal point followed by two digits.
   \end{itemize}
-
 \end{solution}
 \end{questions}
 
