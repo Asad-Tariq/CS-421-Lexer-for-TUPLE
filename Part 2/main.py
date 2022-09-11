@@ -1,5 +1,21 @@
+import os
 from lexer import *
 from typing import List, Dict, Tuple
+
+
+def get_abs_file_path(path) -> str:
+    """Returns the absolute file path of the indicated file.
+
+    Args:
+    - path: the relative path to the indicated file.
+
+    Returns:
+    the absolute path for the relative file.
+    """
+
+    # the absolute directory the script is in
+    script_dir = os.path.dirname(__file__)
+    return os.path.join(script_dir, path)
 
 
 def write_token_stream(token_stream: Dict[int, str], file_num: int) -> None:
@@ -13,11 +29,14 @@ def write_token_stream(token_stream: Dict[int, str], file_num: int) -> None:
     Returns:
     None.
     """
-
+    
+    # get absolute file path
+    abs_file_path = get_abs_file_path(f'TokenStream\\test0{file_num}.out')
+    
     # write the file
-    with open(f'TokenStream\\test0{file_num}.out', "w") as stream:
+    with open(abs_file_path, "w") as stream:
         # the entire stream is written in a single line
-        stream.write(''.join(token_stream.values()))
+        stream.write('\n'.join(token_stream.values()))
 
 
 def write_symb_tbl(symbol_table: Dict[int, str], file_num: int) -> None:
@@ -32,8 +51,11 @@ def write_symb_tbl(symbol_table: Dict[int, str], file_num: int) -> None:
     None.
     """
 
+    # get asolute file path
+    abs_file_path = get_abs_file_path(f'SymbolTable\\test0{file_num}.sym')
+    
     # write the file
-    with open(f'SymbolTable\\test0{file_num}.sym', "w") as table:
+    with open(abs_file_path, "w") as table:
         table.write("{:<8} {:<15}\n".format('Key', 'Symbol'))
         for ix, entry in symbol_table.items():
             table.write("{:<8} {:<15}\n".format(ix, entry))
@@ -51,8 +73,11 @@ def write_error_stream(error_stream: Dict[int, List[str]], file_num: int) -> Non
     None.
     """
 
+    # get absolute file path
+    abs_file_path = get_abs_file_path(f'ErrorStream\\test0{file_num}.err')
+    
     # write the file
-    with open(f'ErrorStream\\test0{file_num}.err', "w") as error:
+    with open(abs_file_path, "w") as error:
         error.write("{:<8} {:<15}\n".format('<line#>', '<error_found>'))
         for line, errors in error_stream.items():
             for err in errors:
@@ -118,13 +143,16 @@ def main() -> None:
 
     Returns:
     None.
-    """
-
+    """ 
+    
     # ask user for file number
     file_num = int(input("Enter the file number: "))
 
+    # get absolute file path
+    abs_file_path = get_abs_file_path(f'Tests\\test0{file_num}.tpl')
+    
     # open the test file and read it
-    with open(f'Tests\\test0{file_num}.tpl') as custom_test:
+    with open(abs_file_path) as custom_test:
         lines = custom_test.readlines()
 
     # initialize all streams
