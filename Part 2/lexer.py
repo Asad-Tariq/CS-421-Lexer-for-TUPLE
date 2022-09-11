@@ -106,7 +106,7 @@ class Lexer:
                 while self.peek() != "/":
                     self.__next_char()
                 if self.peek() == "/":
-                    token = "<comment>"
+                    token = "<Comment>"
                     self.__next_char(2)
         elif self.cur_char in arithmetic_op:
             # if a '/' is encountered, record as arithmetic operator
@@ -133,7 +133,7 @@ class Lexer:
             save_string += self.cur_char
             self.__next_char()
         if self.cur_char == ".":
-            token = "<Invalid identifier!>"
+            token = "<Invalid Identifier!>"
             self.error = f'{save_string}{self.cur_char} (Invalid Identifier!)'
             self.__next_char()
         elif self.cur_char not in whitespaces.keys() and self.cur_char not in punctuation \
