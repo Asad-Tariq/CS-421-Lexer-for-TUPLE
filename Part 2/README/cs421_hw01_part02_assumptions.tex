@@ -1,0 +1,35 @@
+\documentclass[a4paper, 10pt, oneside]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage[a4paper, left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\title{Homework 1: Lexical Analyzer \footnote{This document is with reference to Part 2 of the assignment.}\\CS 421 Compiler Design and Construction}
+\author{Asad Tariq \& Fahad Shaikh}
+\date{Habib University\\Fall 2022\\\textbf{\textcolor{red}{Due:}} September 11, 2022}
+
+
+\onehalfspacing
+
+\begin{document}
+
+\maketitle
+\noindent
+With reference to the \textbf{Lexical Analyzer} implemented for the language \texttt{\textcolor{blue}{TUPLE}}, let us, \textit{the programmers},
+elucidate some of the assumptions taken, conventions followed and references used. They are as follows:
+\begin{itemize}
+    \item Some modifications were made to the given lexical specification - specified on \emph{\textbf{pg.2}} of the assignment write-up. These changes
+    are with respect to the \textbf{Keyword} and \textbf{Data Types} categories - upon examination of the test files, it was seen that the common language
+    keywords and data types, \texttt{print}, \texttt{return} and \texttt{str} were not specified within the lexical specification thus, they were catered to
+    as such per our own prerogative.
+    \item With reference to entries within the symbol table, the decision was made not to include numeric constants such as: \texttt{2.3}, \texttt{-5}, \texttt{10} etc. Per the
+    current implementation of lexical analyzer, the symbol table only records identifiers.
+    \item As of now, all arithmetic operations are dealt with as part of a single category. Delineation of arithmetic operators with respect to precedence\footnote{As discussed in the lecture session of $9^{th}$ September.} is not implemented.
+    \item This \href{https://austinhenley.com/blog/teenytinycompiler1.html}{reference} proved useful when starting out with implementation of the analyzer.
+\end{itemize}
+
+\end{document}

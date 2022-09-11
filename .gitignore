@@ -1,4 +1,10 @@
-*.pdf
 Part 2/venv/
 __pycache__/
 .idea/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+Part 1/*.out
+Part 2/README/*.out
+*.synctex.gz
