@@ -1,1 +1,24 @@
-<Comment></><newline><keyword, void><blank><id, 1><punctuator, (><dt, int><blank><id, 2><punctuator, ,><blank><dt, int><blank><id, 3><punctuator, ,><blank><dt, float><blank><id, 4><blank><id, 5><punctuator, )><blank><punctuator, {><newline><tab><dt, int><blank><id, 6><blank><assign, =><blank><id, 2><blank><+><blank><id, 3><blank><+><id, 5><punctuator, ;><newline><tab><dt, float><blank><id, 7><blank><assign, =><blank><id, 2><blank><*><id, 3><blank><*><blank><id, 5><punctuator, ;><newline><tab><dt, int><blank><id, 8><blank><assign, =><blank><id, 2></><blank><punctuator, (><id, 3><blank></><blank><id, 5><punctuator, )><punctuator, ;><newline><keyword, return><blank><id, 6><blank><+><blank><id, 7><punctuator, ;><newline><punctuator, }><newline><newline><dt, float><blank><id, 9><punctuator, (><dt, int><blank><id, 2><punctuator, )><newline><punctuator, {><newline><blank><keyword, while><blank><punctuator, (><id, 3><blank><rel_op, EQ><keyword, true><punctuator, )><newline><punctuator, {><blank><newline><blank><blank><blank><blank><blank><keyword, str><blank><id, 10><blank><assign, =><blank><literal, haBiB><punctuator, ;><blank><newline><blank><blank><blank><blank><blank><dt, float><blank><id, 2><blank><assign, =><blank><id, 2><blank><+><blank><float, 0.01E><punctuator, ;><newline><blank><blank><blank><blank><blank><blank><keyword, if><blank><punctuator, (><id, 2><blank><rel_op, GE><blank><float, 9.25><blank><keyword, and><blank><id, 10><blank><rel_op, EQ><literal, HABIB><blank><punctuator, )><blank><punctuator, {><newline><blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, for><blank><punctuator, (><dt, int><blank><id, 11><blank><assign, =><blank><num, 100><punctuator, ;><blank><id, 11><blank><rel_op, GE><blank><num, 0><punctuator, ;><blank><id, 11><blank><assign, =><blank><id, 11><blank><num, -1><punctuator, )><blank><punctuator, {><newline><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><id, 2><blank><assign, =><blank><id, 2><^><id, 11><punctuator, ;><newline><blank><blank><blank><blank><blank><blank><blank><blank><blank><punctuator, }><newline><blank><blank><blank><blank><blank><punctuator, }><blank><newline><blank><blank><blank><blank><blank><keyword, else><blank><punctuator, {><newline><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, break><punctuator, ;><newline><blank><blank><blank><blank><blank><punctuator, }><newline><punctuator, }><tab><newline><tab><tab><tab>
+<Comment></><newline>
+<keyword, void><blank><id, 1><punctuator, (><dt, int><blank><id, 2><punctuator, ,><blank><dt, int><blank><id, 3><punctuator, ,><blank><dt, float><blank><id, 4><blank><id, 5><punctuator, )><blank><punctuator, {><newline>
+<tab><dt, int><blank><id, 6><blank><assign, =><blank><id, 2><blank><+><blank><id, 3><blank><+><id, 5><punctuator, ;><newline>
+<tab><dt, float><blank><id, 7><blank><assign, =><blank><id, 2><blank><*><id, 3><blank><*><blank><id, 5><punctuator, ;><newline>
+<tab><dt, int><blank><id, 8><blank><assign, =><blank><id, 2></><blank><punctuator, (><id, 3><blank></><blank><id, 5><punctuator, )><punctuator, ;><newline>
+<keyword, return><blank><id, 6><blank><+><blank><id, 7><punctuator, ;><newline>
+<punctuator, }><newline>
+<newline>
+<dt, float><blank><id, 9><punctuator, (><dt, int><blank><id, 2><punctuator, )><newline>
+<punctuator, {><newline>
+<blank><keyword, while><blank><punctuator, (><id, 3><blank><rel_op, EQ><keyword, true><punctuator, )><newline>
+<punctuator, {><blank><newline>
+<blank><blank><blank><blank><blank><keyword, str><blank><id, 10><blank><assign, =><blank><literal, haBiB><punctuator, ;><blank><newline>
+<blank><blank><blank><blank><blank><dt, float><blank><id, 2><blank><assign, =><blank><id, 2><blank><+><blank><float, 0.01E><punctuator, ;><newline>
+<blank><blank><blank><blank><blank><blank><keyword, if><blank><punctuator, (><id, 2><blank><rel_op, GE><blank><float, 9.25><blank><keyword, and><blank><id, 10><blank><rel_op, EQ><literal, HABIB><blank><punctuator, )><blank><punctuator, {><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, for><blank><punctuator, (><dt, int><blank><id, 11><blank><assign, =><blank><num, 100><punctuator, ;><blank><id, 11><blank><rel_op, GE><blank><num, 0><punctuator, ;><blank><id, 11><blank><assign, =><blank><id, 11><blank><num, -1><punctuator, )><blank><punctuator, {><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><id, 2><blank><assign, =><blank><id, 2><^><id, 11><punctuator, ;><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><punctuator, }><newline>
+<blank><blank><blank><blank><blank><punctuator, }><blank><newline>
+<blank><blank><blank><blank><blank><keyword, else><blank><punctuator, {><newline>
+<blank><blank><blank><blank><blank><blank><blank><blank><blank><blank><keyword, break><punctuator, ;><newline>
+<blank><blank><blank><blank><blank><punctuator, }><newline>
+<punctuator, }><tab><newline>
+<tab><tab><tab>
